@@ -1,0 +1,66 @@
+.container
+{
+
+}
+
+section.banner
+{
+  height:270px;
+}
+section.banner a img
+{
+  height:100%;
+}
+
+section.video
+{
+  background-color:#e7f3f3;
+  padding:2% 0;
+  text-align: center;
+  height:31rem;
+}
+
+section.category
+{
+  max-width:1000px;
+  margin:0 auto;
+  margin-top:50px;
+}
+section.category .title
+{
+  font-size:23px;
+  font-weight:600;
+  margin-bottom:20px;
+}
+section.category .classLists
+{
+  width:100%;
+  display:flex;
+  align-items: center; 
+}
+section.category .classLists .classList
+{
+  width:290px;
+  -webkit-box-shadow: 1px 4px 6px rgba(0 0 0 / 10%);
+  border-radius:5px;
+  cursor:pointer;
+  margin-right:20px;
+}
+section.category .classLists .classList:last-child
+{
+  margin-right:0;
+}
+section.category .classLists .classList .info
+{
+  height:65px;
+  padding:10px 15px 0 15px;
+}
+section.category .classLists .classList .info .title
+{
+  font-size:18px;
+  margin-bottom:7px;
+}
+section.category .classLists .classList .info .teacher
+{
+  font-size:13px;
+}

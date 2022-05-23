@@ -1,0 +1,26 @@
+{% extends 'header.html' %}
+{% block content %}
+<link rel="stylesheet" href="/main.css" />
+<div class="container">
+  <section class="banner">
+    <a href="javascript:void(0)">
+      <img src="/98th_banner.jpeg" alt="98회차 컨퍼런스" />
+    </a>
+  </section>
+  <section class="video">
+    <iframe width="1000px" height="100%"
+      src="https://player.vimeo.com/video/646300226?h=969829d9bf" frameborder="0">
+    </iframe>
+  </section>
+  <section class="category">
+    <div class="title" onClick="move_page('/category')">삶공부</div>
+    <div class="classLists">
+      {% include 'category.html' %}
+      {% include 'category.html' %}
+      {% include 'category.html' %}
+    </div>
+  </section>
+  
+</div>
+{% endblock %}
+{% extends 'footer.html' %}

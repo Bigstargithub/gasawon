@@ -1,0 +1,43 @@
+{% extends 'default.html' %}
+{% block header %}
+<link rel="stylesheet" href="/header.css" />
+<script src="/main.js"></script>
+
+<header>
+  <div class="upper">
+    <img src="/logo.png" alt="메인로고" class="logo" onClick="move_page('/')" />
+    <div class="login">
+      로그인
+    </div>
+  </div>
+  <div class="menu">
+    <ul>
+      <li class="class">
+        <a href="javascript:void(0)" title="영상강의">영상강의</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" title="환영사">환영사</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" title="개·폐회사">
+          개·폐회사
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" title="사례발표">
+          사례발표
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" title="삶공부">
+          삶공부
+        </a>
+      </li>
+    </ul>
+    <div class="hcm-page" onClick="move_page('http://www.housechurchministries.org/')">
+      한국 가사원 홈페이지
+      <img src="/go_gasa.png" alt="한국 가사원" />
+    </div>
+  </div>
+</header>
+{% endblock %}
