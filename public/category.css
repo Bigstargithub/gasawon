@@ -1,0 +1,45 @@
+section.category
+{
+  max-width:1200px;
+  margin:0 auto;
+  margin-top:45px;
+} 
+section.category .nowpage
+{
+  text-align:right;
+  font-size:14px;
+  color:#383838;
+}
+section.category .upper
+{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top:20px;
+}
+section.category .upper .title
+{
+  font-size:28px;
+  color:#383838;
+  font-weight:600;
+}
+section.category .upper .search
+{
+  width:220px;
+  height:20.5px;
+  padding:6px 25px;
+  border:1px solid #c3c3c3;
+  border-radius:50px;
+}
+section.category .upper .search input[type=text]
+{
+  border:0;
+}
+section.category .upper .search input[type=text]:focus
+{
+  outline:none;
+}
+section.category .classLists
+{
+  margin-top:20px;
+}

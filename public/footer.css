@@ -1,0 +1,14 @@
+footer{height:fit-content;max-width:1000px;margin:0 auto;margin-top:30px;}
+footer .container{display:flex;justify-content: space-between;align-items: center; padding:25px 0;}
+footer .container img{
+  width:201px;
+}
+footer .container .info
+{
+
+}
+footer .container .info div
+{
+  font-size:12px;
+  line-height:18px;
+}

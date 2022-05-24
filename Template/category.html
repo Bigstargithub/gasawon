@@ -1,11 +1,16 @@
-<div class="classList">
-  <div class="thumb">
-    <img src="/img_thumb.jpeg" alt="썸네일" />
-  </div>
-  <div class="info">
-    <div class="title">하나님을 경험하는 삶 5 (98차)</div>
-    <div class="teacher">
-      이재철 목사
+{% extends 'default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/category.css" />
+<section class="category">
+  <div class="nowpage">홈 > 환영사</div>
+  <div class="upper">
+    <div class="title">영상강의</div>
+    <div class="search">
+      <input type="text" name="search" id="search" class="search-textbox"/>
     </div>
   </div>
-</div>
+  <div class="classLists">
+      {% include 'class.html' %}
+  </div>
+</section>
+{% endblock %}

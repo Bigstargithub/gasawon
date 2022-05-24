@@ -1,0 +1,14 @@
+{% extends 'default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/login.css" />
+
+<section class="login">
+  <div class="title">로그인</div>
+  <div class="inputs">
+    <input type="text" name="loginId" id="loginId" class="login-text-box" placeholder="아이디를 입력하십시오." />
+    <input type="password" name="loginPw" id="loginPw" class="login-text-box" placeholder="비밀번호를 입력하십시오." />
+  </div>
+  <button class="submit">로그인</button>
+
+</section>
+{% endblock %}

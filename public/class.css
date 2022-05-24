@@ -1,0 +1,32 @@
+section.category .classLists
+{
+  width:100%;
+  display:flex;
+  align-items: center; 
+}
+section.category .classLists .classList
+{
+  width:290px;
+  -webkit-box-shadow: 1px 4px 6px rgba(0 0 0 / 10%);
+  border-radius:5px;
+  cursor:pointer;
+  margin-right:20px;
+}
+section.category .classLists .classList:last-child
+{
+  margin-right:0;
+}
+section.category .classLists .classList .info
+{
+  height:65px;
+  padding:10px 15px 0 15px;
+}
+section.category .classLists .classList .info .title
+{
+  font-size:18px;
+  margin-bottom:7px;
+}
+section.category .classLists .classList .info .teacher
+{
+  font-size:13px;
+}

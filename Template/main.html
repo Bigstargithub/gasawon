@@ -1,4 +1,4 @@
-{% extends 'header.html' %}
+{% extends 'default.html' %}
 {% block content %}
 <link rel="stylesheet" href="/main.css" />
 <div class="container">
@@ -15,12 +15,10 @@
   <section class="category">
     <div class="title" onClick="move_page('/category')">삶공부</div>
     <div class="classLists">
-      {% include 'category.html' %}
-      {% include 'category.html' %}
-      {% include 'category.html' %}
+      {% include 'class.html' %}
+      {% include 'class.html' %}
+      {% include 'class.html' %}
     </div>
   </section>
-  
 </div>
 {% endblock %}
-{% extends 'footer.html' %}
