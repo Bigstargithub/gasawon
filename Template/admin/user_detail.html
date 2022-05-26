@@ -1,0 +1,52 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/user_detail.css" />
+
+<section class="user-detail">
+  <div class="title">회원상세</div>
+  <form id="iform">
+    <input type="hidden" name="seq" value="{{user.guseq}}">
+    <table class="user-detail-table">
+      <tr>
+        <td class="title">아이디</td>
+        <td class="content">
+          {{user.guid}}
+        </td>
+      </tr>
+      <tr>
+        <td class="title">이름</td>
+        <td class="content">
+          <input type="text" name="guname" id="guname" class="table-input" 
+            value="{{user.guname}}" />
+        </td>
+      </tr>
+      <tr>
+        <td class="title">전화번호</td>
+        <td class="content">
+          <input type="text" name="gumobile" id="gumobile" class="table-input"
+            value="{{user.gumobile}}" />
+        </td>
+      </tr>
+      <tr>
+        <td class="title">이메일</td>
+        <td class="content">
+          <input type="email" name="guemail" id="guemail" class="table-input"
+            value="{{user.guemail}}" />
+        </td>
+      </tr>
+      <tr>
+        <td class="title">가입일</td>
+        <td class="content">
+          {{date}}
+        </td>
+      </tr>
+    </table>
+    <div class="btns">
+      <div class="list-up">목록</div>
+      <div class="save">저장</div>
+    </div>
+  </form>
+</section>
+
+{% endblock %}

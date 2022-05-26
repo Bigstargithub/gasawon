@@ -1,0 +1,11 @@
+section.user-list table tr td .edit
+{
+  width:50px;
+  text-align:center;
+  font-size:13px;
+  border:1px solid #dbdbdb;
+  font-weight:700;
+  background-color:#000;
+  color:#fff;
+  cursor:pointer;
+}
