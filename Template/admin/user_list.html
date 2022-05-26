@@ -1,0 +1,34 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/user_list.css" />
+
+<section class="user-list">
+  <div class="title">회원관리</div>
+  <table>
+    <tr>
+      <td style="width:100px;">회원번호</td>
+      <td style="width:150px;">아이디</td>
+      <td style="width:150px;">이름</td>
+      <td style="width:150px;">전화번호</td>
+      <td style="width:200px;">이메일</td>
+      <td style="width:200px;">가입일</td>
+      <td style="width:50px;">상세</td>
+
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td style="width:100px;">{{user.guseq}}</td>
+      <td style="width:150px;">{{user.guid}}</td>
+      <td style="width:150px;">{{user.guname}}</td>
+      <td style="width:150px;">{{user.gumobile}}</td>
+      <td style="width:200px;">{{user.guemail}}</td>
+      <td style="width:200px;">{{user.regdt}}</td>
+      <td style="width:100px;">
+        <div class="edit" onClick="move_page('/admin/user/detail/{{user.guseq}}')">수정</div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

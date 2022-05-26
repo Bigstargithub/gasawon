@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>한국 가정교회사역원</title>
+
+  <link rel="stylesheet" href="/admin/login.css" />
+  <script src="/js/admin.login.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <section class="admin-login">
+    <img src="/logo.png" alt="로고" />
+    <form id="adminLoginForm">
+      <div class="input">
+        <div class="title">아이디</div>
+        <input type="text" name="adminId" id="adminId" class="admin-input" />
+      </div>
+      <div class="input">
+        <div class="title">비밀번호</div>
+        <input type="password" name="adminPw" id="adminPw" class="admin-input" />
+      </div>
+      <div class="form-submit" onClick="form_submit()">로그인하기</button>
+    </form>
+  </section>
+</body>
+</html>
