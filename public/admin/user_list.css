@@ -1,3 +1,14 @@
+section.user-list
+{
+  text-align: center;
+}
+section.user-list table
+{
+  width:70%;
+  margin:0 auto;
+  margin-top:40px;
+}
+
 section.user-list table tr td .edit
 {
   width:50px;
@@ -8,4 +19,14 @@ section.user-list table tr td .edit
   background-color:#000;
   color:#fff;
   cursor:pointer;
+}
+
+section.user-list .pages
+{
+  margin-top:20px;
+}
+section.user-list .pages span
+{
+  cursor:pointer;
+  margin-left:10px;
 }

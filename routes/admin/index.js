@@ -21,5 +21,8 @@ router.post('/login', ctrlAdmin.post_admin_login)
 router.get('/user', ctrlAdmin.get_admin_user)
 
 router.get('/user/detail/:id', ctrlAdmin.get_admin_user_detail)
+router.post('/user/detail/:id', ctrlAdmin.post_admin_user_detail)
+
+router.get('/user/regist', ctrlAdmin.get_admin_user_regist)
 
 module.exports = router

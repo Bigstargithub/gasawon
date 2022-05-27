@@ -1,0 +1,10 @@
+section.user-regist ul
+{
+  display:flex;
+  align-items: center;
+  margin-top:15px;
+}
+section.user-regist ul li
+{
+  margin-right:15px;
+}

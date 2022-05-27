@@ -3,10 +3,12 @@
 <link rel="stylesheet" href="/admin/common.css" />
 <link rel="stylesheet" href="/admin/user_detail.css" />
 
+<script src="/js/admin.user.js"></script>
+
 <section class="user-detail">
   <div class="title">회원상세</div>
   <form id="iform">
-    <input type="hidden" name="seq" value="{{user.guseq}}">
+    <input type="hidden" name="seq" id="user_seq" value="{{user.guseq}}">
     <table class="user-detail-table">
       <tr>
         <td class="title">아이디</td>
@@ -43,8 +45,8 @@
       </tr>
     </table>
     <div class="btns">
-      <div class="list-up">목록</div>
-      <div class="save">저장</div>
+      <div class="list-up" onClick="move_page('/admin/user')">목록</div>
+      <div class="save" onClick="update_user()">저장</div>
     </div>
   </form>
 </section>
