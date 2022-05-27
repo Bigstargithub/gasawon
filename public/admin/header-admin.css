@@ -1,7 +1,8 @@
-ul{list-style: none;}
+ul{list-style: none;padding:0;}
 header
 {
-
+  padding-left:20px;
+  height:100px;
 }
 header ul
 {
@@ -14,9 +15,23 @@ header ul li img.header-logo
 header ul li ul li
 {
   margin-left:20px;
+  width:150px;
 }
 header ul li ul li h2
 {
   cursor:pointer;
 }
-
+header ul li ul li > ul li
+{
+  margin-left:10px;
+  cursor:pointer;
+  display:none;
+}
+header ul li ul li:hover > ul li
+{
+  display:block;
+}
+header ul li ul li > ul li:first-child
+{
+  margin-left:0;
+}
