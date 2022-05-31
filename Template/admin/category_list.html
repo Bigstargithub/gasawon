@@ -1,0 +1,41 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/category_list.css" />
+
+<script src="/js/admin.category.js"></script>
+
+<section class="category-list">
+  <div class="title">카테고리 관리</div>
+  <div class="btns">
+    <div class="write-btn" onClick="move_page('/admin/category/regist')">카테고리 등록</div>
+  </div>
+  <table>
+    <tr>
+      <td style="width:150px">이름</td>
+      <td style="width:150px;">등록일</td>
+      <td style="width:150px;">노출여부</td>
+      <td style="width:300px;">상세</td>
+    </tr>
+    {% for cate in category %}
+    <tr>
+      <td style="width:150px;">{{cate.gcname}}</td>
+      <td style="width:150px;">{{cate.regdtConvert}}</td>
+      <td style="width:150px;">
+        {% if cate.gcshow_yn == 'Y' %}
+        노출
+        {% else %}
+        숨김
+        {% endif %}
+      </td>
+      <td style="width:300px;display:flex;justify-content: center;">
+        <div class="modify-btn" onClick="move_page('/admin/category/modify/{{cate.gcseq}}')">
+          수정
+        </div>
+        <div class="delete-btn" onClick="delete_category('{{cate.gcseq}}')">삭제</div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

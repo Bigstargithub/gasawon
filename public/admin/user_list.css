@@ -1,10 +1,27 @@
-section.user-list
+section.user-search
 {
-  text-align: center;
+  width:100%;
+  text-align:right;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
 }
+
+
+section.user-search > .title
+{
+  font-size:16px;
+  margin-right:10px;
+  font-weight:400;
+}
+section.user-search > button
+{
+  margin-left:10px;
+}
+
 section.user-list table
 {
-  width:70%;
+  width:100%;
   margin:0 auto;
   margin-top:40px;
 }
@@ -29,4 +46,8 @@ section.user-list .pages span
 {
   cursor:pointer;
   margin-left:10px;
+}
+section.user-list .pages span.active
+{
+  font-weight:700;
 }

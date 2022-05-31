@@ -6,7 +6,8 @@
 
 <section class="user-regist">
   <div class="title">회원등록</div>
-  <form id="iform" name="iform" enctype="multitype/form-data">
+  <form id="iform" name="iform" action="/admin/user/regist" method="post" 
+    enctype="multipart/form-data">
     <ul>
       <li>파일을 등록하세요.</li>
       <li>
@@ -14,6 +15,7 @@
           onchange="regist_file(this)" accept=".csv"/>
       </li>
     </ul>
+    <button>등록</button>
   </form>
 </section>
 

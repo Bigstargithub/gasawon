@@ -62,6 +62,9 @@ class App
     this.app.use(express.static(path.join(__dirname)))
     this.app.use(express.static('public/img'))
     this.app.use(express.static('public/js'))
+    
+    this.app.use(express.static(path.join(__dirname, 'upload')))
+    this.app.use(express.static('upload/user'))
   }
 
   setRouting() {

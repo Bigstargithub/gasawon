@@ -9,14 +9,5 @@ function regist_file(file) {
   {
     return alert('csv 파일만 등록하시기 바랍니다.')
   }
-
-  axios.post('/admin/user/regist', {
-    file
-  })
-  .then((res) => {
-    
-  })
-  .catch((err) => {
-    console.error(err)
-  })
+  
 }

@@ -1,0 +1,43 @@
+section.category-list
+{
+  
+}
+
+section.category-list .btns
+{
+  text-align:right;
+}
+section.category-list .btns .write-btn
+{
+  width:100px;
+  height:60.24px;
+  color:#fff;
+  background-color:#222;
+  font-size:16px;
+  display:inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+section.category-list table tr td
+{
+  text-align:center;
+}
+section.category-list table tr td .modify-btn
+{
+  background-color:#dbdbdb;
+  color:#222;
+  width:120px;
+  cursor:pointer;
+  margin-right:10px;
+  border-radius:3px;
+}
+section.category-list table tr td .delete-btn
+{
+  background-color:#DC143C;
+  color:#fff;
+  width:120px;
+  border-radius:3px;
+}

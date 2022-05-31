@@ -1,0 +1,28 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/video_list.css" />
+
+<script src=""></script>
+
+<section class="video-list">
+  <div class="title">영상 관리</div>
+  <div class="search-div" id="search-div" >
+    <span class="search-title">검색</span>
+    <input type="text" name="search-word" id="search-word" class="search-input"/>
+    <div class="search-btn" onClick="search_video()">검색</div>
+  </div>
+  <table>
+    <tr>
+      <td style="width:200px;" class="title">썸네일</td>
+      <td style="width:100px;" class="title">이름</td>
+      <td style="width:100px;" class="title">강사명</td>
+      <td style="width:100px;" class="title">노출 여부</td>
+      <td style="width:200px;" class="title">상세</td>
+    </tr>
+    <tr>
+      
+    </tr>
+  </table>
+</section>
+{% endblock %}
