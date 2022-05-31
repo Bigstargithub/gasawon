@@ -1,0 +1,37 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/category_regist.css" />
+
+<script src="/js/admin.category.js"></script>
+
+<section class="category-regist">
+  <div class="title">카테고리 등록</div>
+  <form id="category-regist-form" name="regist_form"
+  action="/admin/category/regist" method="post">
+    <table>
+      <tr>
+        <td class="title">카테고리 이름</td>
+        <td class="content">
+          <input type="text" name="name" id="name" 
+            class="input-table" />
+        </td>
+      </tr>
+      <tr>
+        <td class="title">노출여부</td>
+        <td class="content">
+          <input type="radio" name="show_yn" id="show_y" value="Y" />
+          <label for="show_y">노출</label>
+          <input type="radio" name="show_yn" id="show_n" value="N" checked/>
+          <label for="show_n">숨김</label>
+        </td>
+      </tr>
+    </table>
+    <div class="btns">
+      <div class="list-btn" onClick="move_page('/admin/category')">목록</div>
+      <div class="submit-btn" onClick="regist_category()">저장</div>
+    </div>
+  </form>
+</section>
+
+{% endblock %}

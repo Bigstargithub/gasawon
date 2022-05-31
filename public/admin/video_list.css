@@ -1,0 +1,25 @@
+section.video-list
+{
+
+}
+section.video-list .title
+{
+
+}
+section.video-list .search-div
+{
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+section.video-list table
+{
+  width:100%;
+  margin:0 auto;
+  margin-top:20px;
+}
+section.video-list table tr td.title
+{
+  text-align:center;
+}
