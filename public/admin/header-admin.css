@@ -29,6 +29,7 @@ header ul li.Menu ul li > ul
   position:absolute;
   top:60px;
   left:20px;
+  width:1000px;
 }
 header ul li ul li > ul li
 {

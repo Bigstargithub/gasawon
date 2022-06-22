@@ -24,7 +24,29 @@ const userFileMulter = multer.diskStorage({
   }
 })
 
-const userFile = multer({storage: userFileMulter})
+const classThumbMulter = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/class_thumb/')
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+const videoThumbMulter = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads/video_thumb/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+
+
+const userFile = multer({ storage: userFileMulter })
+const videoThumbFile = multer({ storage: videoThumbMulter })
+const classThumbFile = multer({ storage: classThumbMulter })
 
 router.get('/',ctrlAdmin.get_admin_main)
 
@@ -47,7 +69,23 @@ router.get('/category/modify/:seq', ctrlAdmin.get_admin_category_modify)
 router.post('/category/modify/:seq', ctrlAdmin.post_admin_category_modify)
 router.delete('/category/delete/:seq', ctrlAdmin.delete_admin_category)
 
+// 클래스 관리
+router.get("/class", ctrlAdmin.get_admin_class)
+router.get("/class/regist", ctrlAdmin.get_admin_class_regist)
+router.post("/class/regist", classThumbFile.single('class_thumb'),
+              ctrlAdmin.post_admin_class_regist)
+router.delete("/class/delete/:seq", ctrlAdmin.delete_admin_class)
+router.get("/class/detail/:seq", ctrlAdmin.get_admin_class_modify)
+
+
 // 영상 관리
 router.get('/video', ctrlAdmin.get_admin_video)
+router.get('/video/regist', ctrlAdmin.get_admin_video_regist)
+router.post('/video/regist', videoThumbFile.single('video_thumb'), 
+            ctrlAdmin.post_admin_video_regist)
+router.get('/video/modify/:seq', ctrlAdmin.get_admin_video_modify)
+router.post('/video/modify/:seq', videoThumbFile.single('video_thumb') ,ctrlAdmin.post_admin_video_modify)
+
+
 
 module.exports = router

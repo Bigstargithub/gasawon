@@ -1,0 +1,10 @@
+section.class-list table
+{
+  width:100%;
+  margin:0 auto;
+  margin-top:40px;
+}
+section.class-list table tr td
+{
+  text-align:center;
+}
