@@ -1,0 +1,48 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/class_list.css">
+
+<script src="/js/admin.class.js"></script>
+
+<section class="class-list">
+  <div class="title">클래스 관리</div>
+  <div class="search-div" id="search-div">
+    <span class="search-title">검색</span>
+    <input type="text" name="search-word" id="search-word" class="search-input" />
+    <div class="search-btn" onClick="search_class">검색</div>
+  </div>
+  <div class="list-btns" style="margin-top:10px;">
+    <a href="/admin/class/regist" class="regist-btn">영상 등록</a>
+  </div>
+  <table>
+    <tr>
+      <td style="width:100px;">번호</td>
+      <td style="width:150px;">썸네일</td>
+      <td>이름</td>
+      <td style="width:150px;">강사명</td>
+      <td style="width:100px;">상세</td>
+    </tr>
+    {% for class in classes %}
+    <tr>
+      <td style="width:100px;">{{loop.index}}</td>
+      <td style="width:150px;">
+        <img src="{{class.gcl_thumb}}" alt="" />
+      </td>
+      <td style="width:150px;">{{class.gcl_name}}</td>
+      <td style="width:150px;">{{class.gcl_tc_name}}</td>
+      <td style="display:flex; justify-content: center;">
+        <div class="modify-btn"
+        onClick="move_page('/admin/class/detail/{{class.gclseq}}')"
+        style="margin-right:10px;"
+        >수정</div>
+        <div class="delete-btn"
+        onClick="delete_class('{{class.gclseq}}')">
+          삭제
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/video_regist.css" />
+
+<script src="/js/admin.video.js"></script>
+
+<section class="video-regist">
+  <div class="title">
+    영상 등록
+  </div>
+  <form action="/admin/video/modify/{{video.gcvseq}}" method="post" 
+  enctype="multipart/form-data" name="video_regist" id="video_regist">
+  <table>
+    <tr>
+      <td class="title">영상명</td>
+      <td class="content">
+        <input type="text" name="video_name" id="video_name" 
+        class="table-input" value="{{video.gcv_name}}" />
+      </td>
+    </tr>
+    <tr>
+      <td class="title">강사명</td>
+      <td class="content">
+        <input type="text" name="video_teacher" 
+        id="video_teacher" class="table-input" value="{{video.gcv_tc_name}}" />
+      </td>
+    </tr>
+    <tr>
+      <td class="title">노출 여부</td>
+      <td class="content">
+        <input type="radio" name="show_yn" id="show_y" class="table-radio" value="Y"
+        {% if video.gcv_show_yn == "Y" %} checked {% endif %}
+        />
+        <label for="show_y">노출</label>
+        <input type="radio" name="show_yn" id="show_n" class="table-radio" value="N" 
+        {% if video.gcv_show_yn == "N" %} checked {% endif %}/>
+        <label for="show_n">숨김</label>
+      </td>
+    </tr>
+    <tr>
+      <td class="title">썸네일</td>
+      <td class="content">
+        <input type="file" name="video_thumb" id="video_thumb" class="table-file" />
+        <img src="/class_thumb/{{video.gcv_thumb}}" alt="" style="height:100px;" />
+      </td>
+    </tr>
+    <tr>
+      <td class="title">Vimeo key</td>
+      <td class="content">
+        <input type="text" name="vimeo_key" id="vimeo_key" class="table-text" 
+        value="{{video.gcv_vimeo_key}}" />
+      </td>
+    </tr>
+  </table>
+  <div class="regist-btns">
+    <div class="list-btn btn" onClick="move_page('/admin/video')">목록</div>
+    <div class="regist-btn btn" onClick="modify_video()">등록</div>
+  </div>
+  </form>
+</section>
+
+{% endblock %}

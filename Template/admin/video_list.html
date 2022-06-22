@@ -3,14 +3,16 @@
 <link rel="stylesheet" href="/admin/common.css" />
 <link rel="stylesheet" href="/admin/video_list.css" />
 
-<script src=""></script>
-
 <section class="video-list">
   <div class="title">영상 관리</div>
   <div class="search-div" id="search-div" >
     <span class="search-title">검색</span>
     <input type="text" name="search-word" id="search-word" class="search-input"/>
     <div class="search-btn" onClick="search_video()">검색</div>
+  </div>
+  <div class="list-btns">
+    <div class="regist-btn" 
+      onClick="move_page('/admin/video/regist')">영상 등록</div>
   </div>
   <table>
     <tr>
@@ -20,9 +22,19 @@
       <td style="width:100px;" class="title">노출 여부</td>
       <td style="width:200px;" class="title">상세</td>
     </tr>
+    {% for class in classes %}
     <tr>
-      
+      <td style="width:200px;">
+        <img src="/class_thumb/{{class.gcv_thumb}}" alt="" />
+      </td>
+      <td style="width:100px;">{{class.gcv_name}}</td>
+      <td style="width:100px;">{{class.gcv_tc_name}}</td>
+      <td style="width:100px;">{{class.gcv_show_yn}}</td>
+      <td style="display:flex;justify-content: center;align-items: center;">
+        <a href="/admin/video/modify/{{class.gcvseq}}">상세</a>
+      </td>
     </tr>
+    {% endfor %}
   </table>
 </section>
 {% endblock %}

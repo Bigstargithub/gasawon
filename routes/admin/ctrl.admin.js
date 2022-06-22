@@ -257,9 +257,210 @@ exports.delete_admin_category = async (req, res) => {
   })
 }
 
+// 클래스 리스트
+exports.get_admin_class = async (req, res) => {
+  const seq = url.parse(req.url, true).query.seq === undefined ? 1 
+              : url.parse(req.url, true).query.seq
+
+  const classes = await models.gasa_class.findAll({
+    offset: 20 * (seq - 1),
+    limit: 20
+  })
+
+  return res.render('admin/class_list', {
+    classes,
+    seq
+  })
+}
+
+// 클래스 등록 페이지
+exports.get_admin_class_regist = async (req, res) => {
+  return res.render('admin/class_regist', {
+    
+  })
+}
+
+// 클래스 등록
+exports.post_admin_class_regist = async (req, res) => {
+  const {
+    class_name,
+    class_teacher,
+    show_yn,
+    opn_d,
+    opn_t
+  } = req.body
+
+  const classThumb = req.file === undefined ? "" : req.file.originalname
+
+  models.gasa_class.create({
+    gcl_name: class_name,
+    gcl_tc_name: class_teacher,
+    gcl_show_yn: show_yn,
+    gcl_opn_d: opn_d,
+    gcl_opn_t: opn_t,
+    gcl_thumb: classThumb
+  })
+  .then(() => {
+    return res.send(`
+      <script>
+        alert("저장되었습니다.")
+        location.href = '/admin/class'
+      </script>
+    `)
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+// 클래스 삭제
+exports.delete_admin_class = async (req, res) => {
+  const seq = req.params.seq
+
+  models.gasa_class.destroy({
+    where: {
+      gclseq: seq
+    }
+  })
+  .then(() => {
+    return res.send("Y")
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+// 클래스 수정 페이지
+exports.get_admin_class_modify = async (req, res) => {
+  const seq = req.params.seq
+  const gasaClass = await models.gasa_class.findOne({
+    where: {
+      gclseq: seq
+    }
+  })
+
+  return res.render("admin/class_modify", {
+    gasaClass,
+  })
+
+
+}
+
 // 영상관리
 exports.get_admin_video = async (req, res) => {
+  const seq = url.parse(req.url, true).query.seq === undefined ? 1 
+              : url.parse(req.url, true).query.seq
+
+  const classes = await models.gasa_video.findAll({
+    offset: 20 * (seq - 1),
+    limit: 20
+  })
+
   return res.render('admin/video_list', {
+    classes
+  })
+}
+
+// 영상등록 페이지
+exports.get_admin_video_regist = async (req, res) => {
+  return res.render('admin/video_regist', {
     
+  })
+}
+
+// 영상 등록
+exports.post_admin_video_regist = async (req, res) => {
+  const {
+    video_name,
+    video_teacher,
+    show_yn,
+    vimeo_key
+  } = req.body
+
+  const thumbFile = req.file === undefined ? "" : req.file.originalname
+
+  models.gasa_video.create({
+    gcv_name: video_name,
+    gcv_tc_name: video_teacher,
+    gcv_show_yn: show_yn,
+    gcv_thumb: thumbFile,
+    gcv_vimeo_key: vimeo_key
+  })
+  .then(() => {
+    return res.send(`
+      <script>
+        alert("저장되었습니다.")
+        location.href = '/admin/video'
+      </script>
+    `)
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+// 영상 수정 페이지
+exports.get_admin_video_modify = async (req, res) => {
+  const seq = req.params.seq
+
+  const video = await models.gasa_video.findOne({
+    where: {
+      gcvseq: seq
+    }
+  })
+
+  return res.render('admin/video_modify.html', {
+    video,
+  })
+}
+
+// 영상 수정
+exports.post_admin_video_modify = async (req, res) => {
+  const seq = req.params.seq
+
+  const video = await models.gasa_video.findOne({
+    where: {
+      gcvseq: seq
+    }
+  })
+  
+  const {
+    video_name,
+    video_teacher,
+    show_yn,
+    vimeo_key
+  } = req.body
+
+  const thumbFile = req.file === undefined ? "" : req.file.originalname
+  const modifyObj = {
+    gcv_name: video_name,
+    gcv_tc_name: video_teacher,
+    gcv_show_yn: show_yn,
+    gcv_vimeo_key: vimeo_key
+  }
+
+  if(thumbFile > "")
+  {
+    fs.unlink(`uploads/class_thumb/${video.gcv_thumb}`, function(err) {
+      console.error(err)
+    })
+    modifyObj.gcv_thumb = thumbFile
+  }
+
+  models.gasa_video.update(modifyObj, {
+    where: {
+      gcvseq: seq
+    }
+  })
+  .then(() => {
+    return res.send(`
+      <script>
+        alert("저장되었습니다.")
+        location.href = '/admin/video'
+      </script>
+    `)
+  })
+  .catch((err) => {
+    console.error(err)
   })
 }

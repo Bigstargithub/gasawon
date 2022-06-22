@@ -1,0 +1,17 @@
+section.video-regist
+{
+
+}
+section.video-regist table tr td.title
+{
+  width:100px;
+}
+section.video-regist table tr td.content
+{
+  margin-left:5px;
+}
+
+section.video-regist .regist-btns
+{
+  margin-top:10px;
+}
