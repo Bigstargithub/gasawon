@@ -7,6 +7,10 @@
 
 <section class="category-regist">
   <div class="title">카테고리 수정</div>
+  <div class="btn-upper">
+    <div class="submit-btn" 
+      onClick="move_page('/admin/category/class/{{cate.gcseq}}')">클래스 등록</div>
+  </div>
   <form id="category-regist-form" name="regist_form"
   action="/admin/category/modify/{{cate.gcseq}}" method="post">
     <table>

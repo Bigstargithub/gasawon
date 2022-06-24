@@ -1,0 +1,63 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/class_video_list.css" />
+
+<script src="/js/admin.class.video.js"></script>
+
+<section class="class-video-list">
+  <input type="hidden" name="seq" id="seq" value="{{seq}}" />
+  <div class="title">클래스 영상 등록</div>
+  <section class="search">
+    <span>검색</span>
+    <input type="text" name="search_text" id="search_text" value="{{searchText}}" />
+    <button onclick="search_video('{{seq}}')">검색</button>
+  </section>
+
+  <section class="class-video">
+    <table>
+      <tr>
+        <td>영상 이름</td>
+        <td>등록일자</td>
+        <td>삭제</td>
+      </tr>
+      {% for classVideo in classVideoList %}
+      <tr>
+        <td>{{classVideo.gcv_name}}</td>
+        <td>{{classVideo.regdt}}</td>
+        <td>
+          <button class="delete-btn"
+          onClick="class_video_delete('{{classVideo.gclvseq}}')">삭제</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section class="video-list">
+    <table>
+      <tr>
+        <td>썸네일</td>
+        <td>영상 이름</td>
+        <td>등록</td>
+      </tr>
+      {% for video in videoList %}
+      <tr>
+        <td>
+          <img src="/video_thumb/{{video.gcv_thumb}}" alt="" class="thumb" />
+        </td>
+        <td>{{video.gcv_name}}</td>
+        <td>
+          {% if video.isClassVideo === 'N' %}
+            <button onClick="class_video_regist('{{video.gcvseq}}')">등록</button>
+          {% else %}
+            이미 등록되어 있습니다.
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+
+</section>
+{% endblock %}

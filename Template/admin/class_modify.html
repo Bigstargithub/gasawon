@@ -7,8 +7,18 @@
 
 <section class="class-regist">
   <div class="title">클래스등록</div>
-  <form id="class_regist" name="class_regist" action="/admin/class/regist"
-  method="post">
+  <div class="btn-upper">
+    <div class="submit-btn"
+    onClick="move_page('/admin/class/video/{{gasaClass.gclseq}}')">
+      영상 등록
+    </div>
+    <div class="submit-btn">
+      
+    </div>
+  </div>
+  <form id="class_form" name="class_form" 
+  action="/admin/class/modify/{{gasaClass.gclseq}}" 
+  enctype="multipart/form-data" method="post">
     <table>
       <tr>
         <td class="title">클래스명</td>
@@ -21,17 +31,19 @@
         <td class="title">강사명</td>
         <td class="content">
           <input type="text" name="class_teacher" 
-          id="class_teacher" class="table-input" />
+          id="class_teacher" class="table-input" value="{{gasaClass.gcl_tc_name}}" />
         </td>
       </tr>
       <tr>
         <td class="title">노출 여부</td>
         <td class="content">
           <input type="radio" name="show_yn" 
-          id="show_y" class="table-radio" value="Y" />
+          id="show_y" class="table-radio" value="Y" 
+          {% if gasaClass.gcl_show_yn == 'Y' %} checked {% endif %} />
           <label for="show_y">노출</label>
           <input type="radio" name="show_yn" 
-          id="show_n" class="table-radio" value="N" checked/>
+          id="show_n" class="table-radio" value="N"
+          {% if gasaClass.gcl_show_yn == 'N' %} checked {% endif %} />
           <label for="show_n">숨김</label>
         </td>
       </tr>
@@ -39,11 +51,13 @@
         <td class="title">오픈일시</td>
         <td class="content">
           <input type="date" name="opn_d" 
-          id="opn_d" class="table-date" />
+          id="opn_d" class="table-date" value="{{gasaClass.gcl_opn_d}}"/>
           <select name="opn_t" id="opn_t">
             <option value="">시</option>
             {% for i in range(0, 24) %}
-            <option value="{{i}}">{{i}}</option>
+            <option value="{{i}}"
+            {% if gasaClass.gcl_opn_t == i %} selected {% endif %}
+            >{{i}}</option>
             {% endfor %}
           </select>
         </td>
@@ -53,6 +67,8 @@
         <td class="content">
           <input type="file" name="class_thumb" 
           id="class_thumb" class="table-file" />
+          <img src="/class_thumb/{{gasaClass.gcl_thumb}}" alt="" 
+          style="width:200px"/>
         </td>
       </tr>
     </table>

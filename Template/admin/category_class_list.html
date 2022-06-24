@@ -1,0 +1,64 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/category_class_list.css" />
+
+<script src="/js/admin.category.class.js"></script>
+
+<section class="category-class-list">
+  <input type="hidden" name="seq" id="seq" value="{{seq}}" />
+  <div class="title">카테고리 클래스 등록</div>
+  <section class="search">
+    <span>검색</span>
+    <input type="text" name="search_text" id="search_text" value="{{searchText}}" />
+    <button onclick="search_class('{{seq}}')">검색</button>
+  </section>
+
+  <section class="category-class">
+    <table>
+      <tr>
+        <td>클래스 이름</td>
+        <td>등록일자</td>
+        <td>삭제</td>
+      </tr>
+      {% for categoryClass in categoryClassList %}
+      <tr>
+        <td>{{categoryClass.gcl_name}}</td>
+        <td>{{categoryClass.regdt}}</td>
+        <td>
+          <button class="delete-btn"
+          onClick="category_class_delete('{{categoryClass.gccseq}}')">삭제</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section class="class-list">
+    
+    <table>
+      <tr>
+        <td>썸네일</td>
+        <td>클래스 이름</td>
+        <td>등록</td>
+      </tr>
+      {% for class in classList %}
+      <tr>
+        <td>
+          <img src="/class_thumb/{{class.gcl_thumb}}" alt="썸네일" class="thumb" />
+        </td>
+        <td>{{class.gcl_name}}</td>
+        <td>
+          {% if class.isCategoryClass == 'N' %}
+            <button onClick="category_class_regist('{{class.gclseq}}')">등록</button>
+          {% else %}
+            이미 등록되어 있습니다.
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+section.class-video
+{
+  width:100%;
+}
+
+section.video-list
+{
+  width:100%;
+}
+section.video-list .thumb
+{
+  width:200px;
+}
