@@ -1,11 +1,12 @@
 const models = require('../../models')
+const db = require('../../models')
 const url = require('url')
 const queryString = require('node:querystring')
 const sequelize = require('sequelize')
 const fs = require('fs')
 const csv = require('csv-parser')
 const crypto = require('crypto')
-const { Op } = require('sequelize')
+const { Op, QueryTypes } = require('sequelize')
 
 // 메인페이지
 exports.get_admin_main = async (req, res) => {
@@ -165,17 +166,39 @@ exports.post_admin_user_regist = async(req, res) => {
 
 // 카테고리 관리
 exports.get_admin_category = async (req, res) => {
+  const seq = url.parse(req.url, true).query.seq === undefined ? 1 
+              : url.parse(req.url, true).query.seq
+  
   const category = await models.gasa_category.findAll({
-
+    offset: 20 * (seq - 1),
+    limit: 20
   })
+
+  
 
   category.forEach(cate => {
     const date = new Date(cate.regdt)
     cate.regdtConvert = date.toLocaleDateString()
   })
 
+  let max_num = await models.gasa_category.count({
+
+  })
+
+  max_num = parseInt((max_num) / 20) + 1
+
+  const startPage = parseInt((seq - 1) / 10) * 10 + 1
+  const endPage = ((parseInt(seq -1) / 10) + 1) * 10 > max_num ? max_num
+    :  (parseInt(((seq - 1) / 10)) + 1) * 10
+
+  
+
   return res.render('admin/category_list', {
-    category
+    category,
+    max_num,
+    seq,
+    startPage,
+    endPage
   })
 }
 
@@ -257,6 +280,155 @@ exports.delete_admin_category = async (req, res) => {
   })
 }
 
+// 카테고리 클래스 등록 페이지
+exports.get_admin_category_class = async (req, res) => {
+  const seq = req.params.seq
+  const searchText = url.parse(req.url, true).query.title === undefined ? "" : 
+    url.parse(req.url, true).query.title
+
+  const [categoryClassList] = await db.sequelize.query(`
+    select
+      a.regdt,
+      a.gccseq,
+      b.gcl_name
+    from gasa_category_class as a
+    inner join gasa_class as b
+    on a.gclseq = b.gclseq
+    where
+      a.gcseq = ${seq}
+  `)
+
+  categoryClassList.forEach((ccl) => {
+    ccl.regdt = new Date(ccl.regdt).toLocaleString()
+  })
+
+  const [classList] = await db.sequelize.query(`
+    select 
+      a.*,
+      case when 
+        a.gclseq = (select gclseq from gasa_category_class where gcseq = ${seq} and gclseq = a.gclseq) 
+      then 'Y'
+      else 'N' end as isCategoryClass
+    from gasa_class as a
+    where
+      a.gcl_name like '%${searchText}%'
+  `)
+
+  return res.render('admin/category_class_list', {
+    categoryClassList,
+    searchText,
+    classList,
+    seq
+  })
+}
+
+// 카테고리 클래스 등록
+exports.post_admin_category_class = async (req, res) => {
+  const seq = req.params.seq
+  const { classSeq } = req.body
+
+  models.gasa_category_class.create({
+    gcseq: seq,
+    gclseq: classSeq
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch(() => {
+    return res.send('N')
+  })
+}
+
+//카테고리 클래스 삭제
+exports.delete_admin_category_class = async (req, res) => {
+  const seq = req.params.seq
+
+  models.gasa_category_class.destroy({
+    where:
+    {
+      gccseq: seq
+    }
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch((err) => {
+    return console.error(err)
+  })
+}
+
+// 클래스 영상 등록 페이지
+exports.get_admin_class_video = async (req, res) => {
+  const seq = req.params.seq
+  const searchText = url.parse(req.url, true).query.title === undefined ? "" : 
+    url.parse(req.url, true).query.title
+
+  const [classVideoList] = await db.sequelize.query(`
+    select 
+      a.gclvseq,
+      a.regdt,
+      b.gcv_name
+    from gasa_class_video as a
+    inner join gasa_video as b on a.gcvseq = b.gcvseq
+    where
+      a.gclseq = ${seq}
+  `)
+
+  classVideoList.forEach((cvl) => {
+    cvl.regdt = new Date(cvl.regdt).toLocaleString()
+  })
+
+  const [videoList] = await db.sequelize.query(`
+    select
+    a.*,
+    case when a.gcvseq = 
+      (select gcvseq from gasa_class_video where gclseq = ${seq} and gcvseq = a.gcvseq)
+    then 'Y' else 'N' end as isClassVideo
+    from gasa_video as a
+  `)
+
+  return res.render('admin/class_video_list', {
+    classVideoList,
+    searchText,
+    videoList,
+    seq
+  })
+}
+
+// 클래스 영상 등록
+exports.post_admin_class_video = async (req, res) => {
+  const seq = req.params.seq
+  const { videoSeq } = req.body
+
+  models.gasa_class_video.create({
+    gclseq: seq,
+    gcvseq: videoSeq
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch((err) => {
+    return console.error(err)
+  })
+}
+
+// 클래스 영상 삭제
+exports.delete_admin_class_video = async (req, res) => {
+  const seq = req.params.seq
+
+  models.gasa_class_video.destroy({
+    where: {
+      gclvseq: seq
+    }
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch((err) => {
+    return console.error(err)
+  })
+}
+
 // 클래스 리스트
 exports.get_admin_class = async (req, res) => {
   const seq = url.parse(req.url, true).query.seq === undefined ? 1 
@@ -323,7 +495,7 @@ exports.delete_admin_class = async (req, res) => {
     }
   })
   .then(() => {
-    return res.send("Y")
+    return res.send('Y')
   })
   .catch((err) => {
     console.error(err)
@@ -342,8 +514,65 @@ exports.get_admin_class_modify = async (req, res) => {
   return res.render("admin/class_modify", {
     gasaClass,
   })
+}
 
+// 클래스 수정
+exports.update_admin_class = async (req, res) => {
+  const seq = req.params.seq
 
+  const updateClass = await models.gasa_class.findOne({
+    where: {
+      gclseq: seq
+    }
+  })
+
+  const {
+    class_name,
+    class_teacher,
+    show_yn,
+    opn_d,
+    opn_t
+  } = req.body
+
+  const classThumb = req.file === undefined ? "" : req.file.originalname
+
+  const modifyObj = {
+    gcl_name: class_name,
+    gcl_tc_name: class_teacher,
+    gcl_show_yn: show_yn,
+    gcl_opn_d: opn_d,
+    gcl_opn_t: opn_t,
+  }
+
+  if (classThumb > "")
+  {
+    if(updateClass.gcl_thumb > "" && fs.existsSync(`uploads/class_thum/${updateClass.gcl_thumb}`))
+    {
+      fs.unlink(`uploads/class_thumb/${updateClass.gcl_thumb}`, function (err) {
+        console.error(err)
+      })
+    }
+    modifyObj.gcl_thumb = classThumb
+  }
+  
+  console.log(modifyObj)
+
+  models.gasa_class.update(modifyObj, {
+    where: {
+      gclseq: seq
+    }
+  })
+  .then(() => {
+    return res.send(`
+      <script>
+        alert('수정되었습니다.')
+        location.href = '/admin/class/modify/${seq}'
+      </script>
+    `)
+  })
+  .catch((err) => {
+    console.error(err)
+  })
 }
 
 // 영상관리

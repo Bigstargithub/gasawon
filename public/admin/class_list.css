@@ -8,3 +8,8 @@ section.class-list table tr td
 {
   text-align:center;
 }
+
+section.class-list table tr td .thumb
+{
+  width:100%;
+}

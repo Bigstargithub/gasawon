@@ -4,7 +4,6 @@ function regist_class() {
   const classOpenDate = document.querySelector("#opn_d").value
   const classOpenTime = document.querySelector("#opn_t").value
 
-
   if (className === '')
   {
     return alert("클래스명을 입력하시기 바랍니다.")
@@ -25,7 +24,7 @@ function regist_class() {
     return alert("오픈일시를 입력하시기 바랍니다.")
   }
 
-  return document.class_regist.submit()
+  return document.class_form.submit()
 }
 
 function delete_class(seq)

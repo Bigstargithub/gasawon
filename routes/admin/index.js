@@ -69,13 +69,25 @@ router.get('/category/modify/:seq', ctrlAdmin.get_admin_category_modify)
 router.post('/category/modify/:seq', ctrlAdmin.post_admin_category_modify)
 router.delete('/category/delete/:seq', ctrlAdmin.delete_admin_category)
 
+// 카테고리 클래스 등록 관련 Router
+router.get('/category/class/:seq', ctrlAdmin.get_admin_category_class)
+router.post('/category/class/:seq', ctrlAdmin.post_admin_category_class)
+router.delete('/category/class/:seq', ctrlAdmin.delete_admin_category_class)
+
+// 클래스 영상 등록
+router.get('/class/video/:seq', ctrlAdmin.get_admin_class_video)
+router.post('/class/video/:seq', ctrlAdmin.post_admin_class_video)
+router.delete('/class/video/:seq', ctrlAdmin.delete_admin_class_video)
+
 // 클래스 관리
 router.get("/class", ctrlAdmin.get_admin_class)
 router.get("/class/regist", ctrlAdmin.get_admin_class_regist)
 router.post("/class/regist", classThumbFile.single('class_thumb'),
               ctrlAdmin.post_admin_class_regist)
 router.delete("/class/delete/:seq", ctrlAdmin.delete_admin_class)
-router.get("/class/detail/:seq", ctrlAdmin.get_admin_class_modify)
+router.get("/class/modify/:seq", ctrlAdmin.get_admin_class_modify)
+router.post("/class/modify/:seq", classThumbFile.single('class_thumb') 
+              ,ctrlAdmin.update_admin_class)
 
 
 // 영상 관리

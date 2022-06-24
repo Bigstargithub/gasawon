@@ -27,13 +27,13 @@
     <tr>
       <td style="width:100px;">{{loop.index}}</td>
       <td style="width:150px;">
-        <img src="{{class.gcl_thumb}}" alt="" />
+        <img src="/class_thumb/{{class.gcl_thumb}}" alt="" class="thumb" />
       </td>
       <td style="width:150px;">{{class.gcl_name}}</td>
       <td style="width:150px;">{{class.gcl_tc_name}}</td>
-      <td style="display:flex; justify-content: center;">
+      <td style="display:flex; justify-content: center; height:100%;">
         <div class="modify-btn"
-        onClick="move_page('/admin/class/detail/{{class.gclseq}}')"
+        onClick="move_page('/admin/class/modify/{{class.gclseq}}')"
         style="margin-right:10px;"
         >수정</div>
         <div class="delete-btn"
