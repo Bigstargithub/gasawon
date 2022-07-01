@@ -3,13 +3,16 @@
 <link rel="stylesheet" href="/admin/common.css" />
 <link rel="stylesheet" href="/admin/video_list.css" />
 
+<script src="/js/admin.video.js"></script>
+
 <section class="video-list">
   <div class="title">영상 관리</div>
-  <div class="search-div" id="search-div" >
-    <span class="search-title">검색</span>
-    <input type="text" name="search-word" id="search-word" class="search-input"/>
-    <div class="search-btn" onClick="search_video()">검색</div>
-  </div>
+  <section class="search-upper">
+    <span class="title">이름검색</span>
+    <input type="text" name="search-word" 
+      id="search-word" class="search-input" value="{{videoName}}" />
+    <button onClick="search_video('{{seq}}')">검색</button>
+  </section>
   <div class="list-btns">
     <div class="regist-btn" 
       onClick="move_page('/admin/video/regist')">영상 등록</div>
@@ -36,5 +39,13 @@
     </tr>
     {% endfor %}
   </table>
+  <div class="pages">
+    <span onClick="move_previous_page({{seq}} - 1)"><</span>
+    {% for i in range(startPage, endPage + 1) %}
+    <span onClick="move_page('/admin/video?seq={{i}}&id={{cateName}}')"
+     {% if i == seq %} class="active" {% endif %}>{{i}}</span>
+    {% endfor %}
+    <span onClick="move_next_page({{seq}} + 1, {{max_num}}, {{cateName}})">></span>
+  </div>
 </section>
 {% endblock %}

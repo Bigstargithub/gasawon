@@ -7,10 +7,12 @@
 
 <section class="class-list">
   <div class="title">클래스 관리</div>
-  <div class="search-div" id="search-div">
-    <span class="search-title">검색</span>
-    <input type="text" name="search-word" id="search-word" class="search-input" />
-    <div class="search-btn" onClick="search_class">검색</div>
+  <section class="search-upper">
+    <span class="title">이름검색</span>
+    <input type="text" name="search-word" 
+      id="search-word" class="search-input" value="{{className}}" />
+    <button onClick="search_class('{{seq}}')">검색</button>
+  </section>
   </div>
   <div class="list-btns" style="margin-top:10px;">
     <a href="/admin/class/regist" class="regist-btn">영상 등록</a>
@@ -44,5 +46,13 @@
     </tr>
     {% endfor %}
   </table>
+  <div class="pages">
+    <span onClick="move_previous_page({{seq}} - 1)"><</span>
+    {% for i in range(startPage, endPage + 1) %}
+    <span onClick="move_page('/admin/class?seq={{i}}&id={{className}}')"
+    {% if i == seq %} class="active" {% endif %}>{{i}}</span>
+    {% endfor %}
+    <span onClick="move_next_page({{seq}} + 1, {{max_num}}, {{className}})">></span>
+  </div>
 </section>
 {% endblock %}

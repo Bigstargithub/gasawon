@@ -18,11 +18,23 @@ header .upper .logo
   width:201px;
   cursor:pointer;
 }
-header .upper .login
+header .upper .login-info
+{
+  display:flex;
+}
+header .upper .login-info .login
 {
   font-size:16px;
   font-weight:500;
   cursor:pointer;
+}
+header .upper .login-info .logout
+{
+  margin-left:10px;
+  font-size:16px;
+  cursor:pointer;
+  font-weight:500;
+  color:red;
 }
 
 header .menu

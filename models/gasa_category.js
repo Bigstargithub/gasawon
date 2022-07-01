@@ -14,7 +14,9 @@ module.exports = function(sequelize, dataTypes) {
     gcorder: {type: Sequelize.INTEGER(10).UNSIGNED, allowNull: false,
       defaultValue: 0, comment: "가사원 카테고리 순서"},
     regdt: {type: Sequelize.DATE, defaultValue: Sequelize.NOW, 
-      comment: "카테고리 등록일시"}
+      comment: "카테고리 등록일시"},
+    order_no: {type: Sequelize.INTEGER(10).UNSIGNED, allowNull: false,
+      defaultValue: 0, comment: "카테고리 순서"}
   }, {
     freezeTableName: true,
     timestamps: false,

@@ -12,8 +12,13 @@
     onClick="move_page('/admin/class/video/{{gasaClass.gclseq}}')">
       영상 등록
     </div>
-    <div class="submit-btn">
-      
+    <div class="submit-btn" style="margin-left:10px;"
+    onClick="move_page('/admin/class/user/{{gasaClass.gclseq}}')">
+      회원 권한 등록
+    </div>
+    <div class="submit-btn" style="margin-left:10px;"
+    onClick="move_page('/admin/class/user/history/{{gasaClass.gclseq}}')">
+      회원 시청 기록
     </div>
   </div>
   <form id="class_form" name="class_form" 
@@ -69,6 +74,13 @@
           id="class_thumb" class="table-file" />
           <img src="/class_thumb/{{gasaClass.gcl_thumb}}" alt="" 
           style="width:200px"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="title">순서</td>
+        <td class="content">
+          <input type="text" name="order_no" id="order_no" 
+          value="{{gasaClass.order_no}}" />
         </td>
       </tr>
     </table>

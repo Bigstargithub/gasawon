@@ -1,24 +1,3 @@
-section.user-search
-{
-  width:100%;
-  text-align:right;
-  display:flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-
-section.user-search > .title
-{
-  font-size:16px;
-  margin-right:10px;
-  font-weight:400;
-}
-section.user-search > button
-{
-  margin-left:10px;
-}
-
 section.user-list table
 {
   width:100%;
@@ -36,19 +15,4 @@ section.user-list table tr td .edit
   background-color:#000;
   color:#fff;
   cursor:pointer;
-}
-
-section.user-list .pages
-{
-  margin-top:20px;
-  text-align:center;
-}
-section.user-list .pages span
-{
-  cursor:pointer;
-  margin-left:10px;
-}
-section.user-list .pages span.active
-{
-  font-weight:700;
 }

@@ -27,22 +27,25 @@ function update_user()
   })
 }
 
-function move_previous_page(seq,id = '')
-{
-  if(seq == 0 && id == '') return location.href = '/admin/user';
-  else if(seq == 0 && id != '') return location.href = '/admin/user?id='+id
-
-  return location.href = '/admin/user?seq='+seq+'&id='+id
-}
-function move_next_page(seq, max, id = '')
-{
-  if(seq > max) return location.href = '/admin/user?seq='+max+'&id='+id
-  return location.href = '/admin/user?seq='+seq+'&id='+id
-}
-
 function user_search()
 {
   const searchText = document.querySelector("#search-text").value
   return location.href = `/admin/user?id=${searchText}`
+}
 
+function reset_password(seq)
+{
+  axios.post(`/admin/user/reset/${seq}`, {
+
+  })
+  .then((response) => {
+    if (response.data === 'Y')
+    {
+      alert("초기화되었습니다.")
+      return location.reload()
+    }
+  })
+  .catch((err) => {
+    console.error(err)
+  })
 }

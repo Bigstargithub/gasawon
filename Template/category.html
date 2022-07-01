@@ -1,6 +1,8 @@
 {% extends 'default.html' %}
 {% block content %}
 <link rel="stylesheet" href="/category.css" />
+<link rel="stylesheet" href="/class.css" />
+
 <section class="category">
   <div class="nowpage">홈 > 환영사</div>
   <div class="upper">
@@ -9,8 +11,13 @@
       <input type="text" name="search" id="search" class="search-textbox"/>
     </div>
   </div>
+  
   <div class="classLists">
+    {% for class in classList %}
       {% include 'class.html' %}
+    {% endfor %}
   </div>
+  
+  
 </section>
 {% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/class_user_history.css" />
+
+<section class="class-user-history">
+  <div class="title">클래스 시청 현황</div>
+  <section class="search-upper">
+    <span>검색</span>
+    <input type="text" name="search_text" id="search_text" value="{{userId}}" />
+    <button onClick="search_class_user_history('{{seq}}')">검색</button>
+  </section>
+  <section class="class-history">
+    <table>
+      <tr>
+        <td>아이디</td>
+        <td>완료여부</td>
+        <td>완료일시</td>
+      </tr>
+      {% for history in userHistoryList %}
+      <tr>
+        <td>{{history.userId}}</td>
+        <td>{{history.isComplete}}</td>
+        <td>{{history.gcl_complete_date}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <div class="pages">
+      <span onClick="move_previous_page({{pageNum}} - 1, {{userId}})"><</span>
+      {% for i in range(startPage, endPage + 1)%}
+      <span onclick="move_page('/admin/user?seq={{i}}&id={{userId}}')"
+        {% if i == pageNum %} class="active" {% endif %}>{{i}}</span>
+      {% endfor %}
+      <span onClick="move_next_page({{pageNum}} + 1, {{max_num}}, {{userId}})">></span>
+    </div>
+  </section>
+  
+</section>
+{% endblock %}

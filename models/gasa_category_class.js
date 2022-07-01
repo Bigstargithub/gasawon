@@ -23,6 +23,10 @@ module.exports = function(sequelize, dataTypes) {
       type: Sequelize.DATE, 
       defaultValue: Sequelize.NOW,
       comment: '등록일시'
+    },
+    order_no: {
+      type: Sequelize.INTEGER(10).UNSIGNED,
+      comment: "가사원 카테고리 클래스 순서"
     }
   }, {
     freezeTableName: true,

@@ -28,3 +28,9 @@ function regist_category()
   
   document.regist_form.submit()
 }
+
+function category_search(seq)
+{ 
+  const searchCate = document.querySelector("#search-text").value
+  return location.href = `/admin/category?seq=${seq}&id=${searchCate}`
+}

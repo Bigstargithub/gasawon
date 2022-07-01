@@ -15,23 +15,33 @@
   </section>
 
   <section class="category-class">
-    <table>
-      <tr>
-        <td>클래스 이름</td>
-        <td>등록일자</td>
-        <td>삭제</td>
-      </tr>
-      {% for categoryClass in categoryClassList %}
-      <tr>
-        <td>{{categoryClass.gcl_name}}</td>
-        <td>{{categoryClass.regdt}}</td>
-        <td>
-          <button class="delete-btn"
-          onClick="category_class_delete('{{categoryClass.gccseq}}')">삭제</button>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+    <form action="/admin/category/class/order/{{seq}}" method="post" 
+    id="category_class_form" name="category_class_form">
+      <table>
+        <tr>
+          <td>클래스 이름</td>
+          <td>등록일자</td>
+          <td>삭제</td>
+          <td>순서</td>
+        </tr>
+        {% for categoryClass in categoryClassList %}
+        <tr>
+          <td>{{categoryClass.gcl_name}}</td>
+          <td>{{categoryClass.regdt}}</td>
+          <td>
+            <button class="delete-btn"
+            onClick="category_class_delete('{{categoryClass.gccseq}}')">삭제</button>
+          </td>
+          <td>
+            <input type="text" name="order_no_{{categoryClass.gccseq}}" id="order_no_{{categoryClass.gccseq}}" 
+            value="{{categoryClass.order_no}}" class="input-table" />
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <button class="submit-btn" style="margin-top:10px;"
+      onClick="submit_form()">순서저장</button>
+    </form>
   </section>
 
   <section class="class-list">

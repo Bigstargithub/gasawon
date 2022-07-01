@@ -1,4 +1,4 @@
-function search_video()
+function search_video(seq)
 {
   const searchWord = document.querySelector('#search-word').value
   if (searchWord === '')
@@ -6,7 +6,7 @@ function search_video()
     return alert('검색어를 입력하시기 바랍니다.')
   }
 
-  return location.href = `/admin/video?search=${searchWord}`
+  return location.href = `/admin/video?seq=${seq}&id=${searchWord}`
 }
 
 // 영상 등록 함수

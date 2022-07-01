@@ -1,0 +1,55 @@
+{% extends 'default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/class_view.css" />
+
+<section class="class-view">
+
+  <section class="class-upper">
+    <div class="left">
+      <img src="/class_thumb/{{classList.gcl_thumb}}" alt="썸네일" />
+    </div>
+    <div class="right">
+      <div class="title">{{classList.gcl_name}}</div>
+      <div class="tc">{{classList.gcl_tc_name}}</div>
+      <div class="btns">
+        <div class="share" onClick="share_url()">공유하기</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="class-video">
+    <div class="left">
+      <div class="pic">
+        <div id="player"></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="video-lists">
+        {% for video in videoList %}
+        <div class="list">
+          <img src="/video_thumb/{{video.gcv_thumb}}" alt="썸네일" />
+          <div class="info">
+            <span class="index">강의 {{loop.index}}</span>
+            <span class="title">{{video.gcv_name}}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<script>
+  const playerWidth = document.querySelector(".pic").clientWidth
+
+  const videoOption = {
+    id: "{{videoList[0].gcv_vimeo_key}}",
+    width: playerWidth,
+    speed: true,
+    playsinline: true,
+  }
+
+  const Player = new Vimeo.Player('player', videoOption)
+</script>
+{% endblock %}

@@ -22,11 +22,10 @@
   display:flex;
   align-items: center;
   margin-top:15px;
-  margin-left:30px;
 }
 .btns .list-up
 {
-  width:100px;
+  width:120px;
   height:50px;
   background:#dbdbdb;
   color:#222;
@@ -39,7 +38,7 @@
 }
 .btns .save
 {
-  width:100px;
+  width:120px;
   height:50px;
   background:#222;
   color:#fff;
@@ -48,4 +47,5 @@
   align-items: center;
   border-radius:3px;
   cursor: pointer;
+  margin-left:10px;
 }

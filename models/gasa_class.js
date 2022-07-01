@@ -3,7 +3,8 @@ const models = require('../models')
 
 module.exports = function (sequelize, dataTypes) {
   const gasa_class = sequelize.define('gasa_class', {
-    gclseq: { type: Sequelize.INTEGER(10).UNSIGNED, primaryKey: true,
+    gclseq: { type: Sequelize.INTEGER(10).UNSIGNED, 
+      primaryKey: true,
       autoIncrement: true, comment: "가사원 클래스 고유번호"},
     gcl_name: { type: Sequelize.STRING(50), allowNull: false,
     comment: "가사원 클래스 이름"},

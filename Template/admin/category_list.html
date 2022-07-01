@@ -10,6 +10,12 @@
   <div class="btns">
     <div class="write-btn" onClick="move_page('/admin/category/regist')">카테고리 등록</div>
   </div>
+  <section class="search-upper">
+    <div class="title">이름 검색</div>
+    <input type="text" class="input-search" 
+      id="search-text" value="{{cateName}}"/>
+    <button onClick="category_search('{{seq}}')">검색</button>
+  </section>
   <table>
     <tr>
       <td style="width:150px">이름</td>
@@ -37,5 +43,13 @@
     </tr>
     {% endfor %}
   </table>
+  <div class="pages">
+    <span onClick="move_previous_page({{seq}} - 1)"><</span>
+    {% for i in range(startPage, endPage + 1) %}
+    <span onClick="move_page('/admin/category?seq={{i}}&id={{cateName}}')"
+     {% if i == seq %} class="active" {% endif %}>{{i}}</span>
+    {% endfor %}
+    <span onClick="move_next_page({{seq}} + 1, {{max_num}}, {{cateName}})">></span>
+  </div>
 </section>
 {% endblock %}

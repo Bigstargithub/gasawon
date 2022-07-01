@@ -3,14 +3,16 @@ section.category .classLists
   width:100%;
   display:flex;
   align-items: center; 
+  flex-wrap:wrap;
 }
 section.category .classLists .classList
 {
-  width:290px;
+  width:380px;
   -webkit-box-shadow: 1px 4px 6px rgba(0 0 0 / 10%);
   border-radius:5px;
   cursor:pointer;
   margin-right:20px;
+  margin-top:20px;
 }
 section.category .classLists .classList:last-child
 {
@@ -29,4 +31,8 @@ section.category .classLists .classList .info .title
 section.category .classLists .classList .info .teacher
 {
   font-size:13px;
+}
+section.category .classLists .classList .thumb img
+{
+  width:100%;
 }

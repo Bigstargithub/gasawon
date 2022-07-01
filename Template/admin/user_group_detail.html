@@ -1,0 +1,45 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/user_group_detail.css">
+
+<script src="/js/admin.common.js"></script>
+<script src="/js/admin.user.group.js"></script>
+
+<section class="user-group-detail">
+  <input type="hidden" name="groupName" id="groupName" value="{{groupName}}" />
+  <section class="search-upper">
+    <div class="title">아이디 검색</div>
+    <input type="text" class="input-search" id="search-text" />
+    <button onClick="user_search('{{seq}}')">검색</button>
+  </section>
+
+  <table>
+    <tr>
+      <td style="width:150px;">아이디</td>
+      <td style="width:150px;">이름</td>
+      <td style="width:150px;">전화번호</td>
+      <td style="width:200px;">이메일</td>
+      <td style="width:200px;">가입일</td>
+      <td style="width:50px">등록</td>
+    </tr>
+    {% for userList in userGroupDetailList %}
+      <tr>
+        <td style="width:150px;">{{userList.guid}}</td>
+        <td stlye="width:150px;">{{userList.guname}}</td>
+        <td style="width:150px;">{{userList.guphone}}</td>
+        <td style="width:200px;">{{userList.guemail}}</td>
+        <td style="width:200px;">{{userList.regdtConvert}}</td>
+        <td>
+          {% if userList.isUserGroup == 'Y' %}
+          <button class="delete-btn" onClick="delete_user_group('{{userList.gugseq}}')">삭제</button>
+          {% else %}
+          <button onClick="write_user_group('{{userList.guseq}}')">등록</button>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+
+  </table>
+</section>
+{% endblock %}

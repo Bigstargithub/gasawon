@@ -54,5 +54,9 @@ function class_video_delete(seq)
       console.error(err)
     })
   }
+}
 
+function sumbit_order_form()
+{
+  return document.class_video_form.submit();
 }

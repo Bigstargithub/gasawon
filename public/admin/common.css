@@ -9,6 +9,28 @@ section > .title
   font-size:24px;
   font-weight:700;
 }
+
+/* 위쪽 검색 영역*/
+section.search-upper
+{
+  width:100%;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+section.search-upper > .title
+{
+  font-size:16px;
+  margin-right:10px;
+  font-weight:400;
+}
+section.search-upper > button
+{
+  margin-left:10px;
+}
+/* 위쪽 검색 영역*/
+
+
 section table
 {
   margin-top:40px;
@@ -161,3 +183,30 @@ section.search input[type="text"]
   margin:0 5px;
 }
 /* 검색 영역 */
+
+/* 리스트 검색 영역 */
+section.list-search
+{
+  width:100%;
+  display:flex;
+  justify-items: flex-end;
+  align-items: center;
+}
+/* 리스트 검색 영역 */
+
+/* page div */
+.pages
+{
+  margin-top:20px;
+  text-align:center;
+}
+.pages span
+{
+  cursor:pointer;
+  margin-left:10px;
+}
+.pages span.active
+{
+  font-weight: 700;
+}
+/* page div */

@@ -15,23 +15,34 @@
   </section>
 
   <section class="class-video">
-    <table>
-      <tr>
-        <td>영상 이름</td>
-        <td>등록일자</td>
-        <td>삭제</td>
-      </tr>
-      {% for classVideo in classVideoList %}
-      <tr>
-        <td>{{classVideo.gcv_name}}</td>
-        <td>{{classVideo.regdt}}</td>
-        <td>
-          <button class="delete-btn"
-          onClick="class_video_delete('{{classVideo.gclvseq}}')">삭제</button>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+    <form action="/admin/class/video/order/{{seq}}" method="post" 
+    name="class_video_form" id="class_video_form">
+      <table>
+        <tr>
+          <td>영상 이름</td>
+          <td>등록일자</td>
+          <td>삭제</td>
+          <td>순서</td>
+        </tr>
+        {% for classVideo in classVideoList %}
+        <tr>
+          <td>{{classVideo.gcv_name}}</td>
+          <td>{{classVideo.regdt}}</td>
+          <td>
+            <button class="delete-btn"
+            onClick="class_video_delete('{{classVideo.gclvseq}}')">삭제</button>
+          </td>
+          <td>
+            <input type="text" name="order_no_{{classVideo.gclvseq}}" id="{{classVideo.gclvseq}}" 
+            value="{{classVideo.order_no}}" />
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <button class="submit-btn" style="margin-top:10px;" onClick="submit_order_form()">
+        순서저장
+      </button>
+    </form>
   </section>
 
   <section class="video-list">

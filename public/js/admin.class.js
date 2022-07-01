@@ -45,5 +45,11 @@ function delete_class(seq)
       console.log(err)
     })
   }
+}
 
+function search_class(seq)
+{
+  const searchClass = document.querySelector("#search-word").value
+
+  return location.href = `/admin/class?seq=${seq}&id=${searchClass}`
 }

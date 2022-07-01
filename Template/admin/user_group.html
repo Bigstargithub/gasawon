@@ -1,0 +1,25 @@
+{% extends 'admin/default.html' %}
+{% block content %}
+<link rel="stylesheet" href="/admin/common.css" />
+<link rel="stylesheet" href="/admin/user_group.css" />
+
+<script src="/js/admin.user.group.js"></script>
+<section class="user-group">
+  <table>
+    <tr>
+      <td>No. </td>
+      <td>그룹명</td>
+      <td>상세</td>
+    </tr>
+    {% for userGroup in userGroupList %}
+    <tr>
+      <td>{{loop.index}}</td>
+      <td>{{userGroup.gug_name}}</td>
+      <td>
+        <button onClick="move_page('/admin/user/group/detail/{{userGroup.gug_name}}')">관리</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

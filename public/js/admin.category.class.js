@@ -49,6 +49,10 @@ function category_class_delete(categoryClassSeq)
         return alert('관리자에게 문의하시기 바랍니다.')
       }
     })
-  }
-  
+  } 
+}
+
+function submit_form()
+{
+  return document.category_class_form.submit()
 }

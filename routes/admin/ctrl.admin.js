@@ -147,16 +147,20 @@ exports.post_admin_user_regist = async(req, res) => {
     result.map(data => {
       const phoneNo = data[Object.keys(data)[4]].replaceAll(/-/g, '')
 
-      const cryptoKey = crypto.createCipher('aes-256-gcm',process.env.DB_ENCRYPT_KEY);
-      let passwdWithCrypto = cryptoKey.update(data[Object.keys(data)[1]],'utf8', 'base64')
-      passwdWithCrypto += cryptoKey.final('base64')
-
-      models.gasa_user.create({
-        guid: data[Object.keys(data)[0]],
-        gupass: passwdWithCrypto,
-        guname: data[Object.keys(data)[2]],
-        guemail: data[Object.keys(data)[3]],
-        guphone: phoneNo
+      db.sequelize.query(`
+        insert into
+          gasa_user
+        set
+          guid = '${data[Object.keys(data)[0]]}',
+          gupass = aes_encrypt('${data[Object.keys(data)[1]]}', '${process.env.DB_ENCRYPT_KEY}'),
+          guname = '${data[Object.keys(data)[2]]}',
+          guemail = '${data[Object.keys(data)[3]]}',
+          guphone = '${phoneNo}'
+      `).then((result) => {
+        models.gasa_user_group.create({
+          gug_name: data[Object.keys(data)[5]],
+          guseq: result[0]
+        })
       })
     })
   })
@@ -164,17 +168,120 @@ exports.post_admin_user_regist = async(req, res) => {
   return res.send("<script>alert('저장이 완료되었습니다.');location.href='/admin/user';</script>")
 }
 
+exports.post_admin_user_reset = async (req, res) => {
+  const seq = req.params.id
+
+  db.sequelize.query(`
+    update
+      gasa_user
+    set
+      gupass = aes_encrypt(guid, '${process.env.DB_ENCRYPT_KEY}')
+    where
+      guseq = ${seq}
+  `)
+  
+  return res.send("Y")
+}
+
+// 회원 그룹 관리페이지
+exports.get_admin_user_group = async (req, res) => {
+  const userGroupList = await models.gasa_user_group.findAll({
+    attributes:[
+      'gug_name'
+    ],
+    group: 'gug_name'
+  })
+
+  return res.render('admin/user_group', {
+    userGroupList
+  })
+}
+
+// 회원 그룹 관리 상세페이지
+exports.get_admin_user_group_detail = async (req, res) => {
+  const groupName = req.params.name
+  const seq = url.parse(req.url, true).query.seq === undefined ? 1 
+              : url.parse(req.url, true).query.seq
+  const userId = url.parse(req.url, true).query.id === undefined ? '' :
+    url.parse(req.url, true).query.id
+
+  const offsetNum = 20 * (seq - 1)
+
+  const [userGroupDetailList] = await db.sequelize.query(`
+    select
+      a.guseq,
+      a.guid,
+      a.guname,
+      a.guphone,
+      a.guemail,
+      a.regdt,
+      b.gugseq,
+      case when b.gug_name = '${groupName}' then 'Y'
+      else 'N' end as isUserGroup
+    from gasa_user as a
+      left join gasa_user_group as b
+    on a.guseq = b.guseq
+    where
+      a.guid like '%${userId}%'
+    order by isUserGroup desc
+    limit 20
+    offset ${offsetNum}
+  `)
+
+  userGroupDetailList.forEach(user => {
+    const dateValues = new Date(user.regdt)
+    user.regdtConvert = dateValues.toLocaleString()
+  })
+
+  return res.render('admin/user_group_detail', {
+    userGroupDetailList,
+    groupName,
+    seq,
+    userId
+  })
+}
+
+exports.post_admin_user_group = async (req, res) => {
+  const { userSeq, groupName } = req.body
+
+  models.gasa_user_group.create({
+    gug_name: groupName,
+    guseq: userSeq,
+  })
+
+  return res.send('Y')
+}
+
+exports.delete_admin_user_group = async (req, res) => {
+  const seq = req.params.seq
+  models.gasa_user_group.destroy({
+    where:{
+      gugseq: seq
+    }
+  })
+
+  return res.send('Y')
+}
+
 // 카테고리 관리
 exports.get_admin_category = async (req, res) => {
   const seq = url.parse(req.url, true).query.seq === undefined ? 1 
               : url.parse(req.url, true).query.seq
+  const cateName = url.parse(req.url, true).query.id === undefined ? '' :
+    url.parse(req.url, true).query.id
   
   const category = await models.gasa_category.findAll({
+    where: {
+      gcname: {
+        [Op.like]: `%${cateName}%`
+      }
+    },
+    order: [
+      'order_no', 'regdt'
+    ],
     offset: 20 * (seq - 1),
     limit: 20
   })
-
-  
 
   category.forEach(cate => {
     const date = new Date(cate.regdt)
@@ -182,7 +289,11 @@ exports.get_admin_category = async (req, res) => {
   })
 
   let max_num = await models.gasa_category.count({
-
+    where: {
+      gcname: {
+        [Op.like]: `%${cateName}%`
+      }
+    }
   })
 
   max_num = parseInt((max_num) / 20) + 1
@@ -191,14 +302,13 @@ exports.get_admin_category = async (req, res) => {
   const endPage = ((parseInt(seq -1) / 10) + 1) * 10 > max_num ? max_num
     :  (parseInt(((seq - 1) / 10)) + 1) * 10
 
-  
-
   return res.render('admin/category_list', {
     category,
     max_num,
     seq,
     startPage,
-    endPage
+    endPage,
+    cateName,
   })
 }
 
@@ -211,10 +321,11 @@ exports.get_admin_category_regist = async (req, res) => {
 
 // 카테고리 등록
 exports.post_admin_category_regist = async (req, res) => {
-  const { name, show_yn } = req.body
+  const { name, show_yn, order_no } = req.body
   models.gasa_category.create({
     gcname: name,
     gcshow_yn : show_yn,
+    order_no: order_no,
   })
   .then(() => {
     return res.send(`<script>alert('저장되었습니다.');
@@ -242,12 +353,13 @@ exports.get_admin_category_modify = async (req, res) => {
 
 // 카테고리 수정
 exports.post_admin_category_modify = async (req, res) => {
-  const { name, show_yn } = req.body
+  const { name, show_yn,order_no } = req.body
   const seq = req.params.seq
   
   models.gasa_category.update({
     gcname: name,
-    gcshow_yn: show_yn
+    gcshow_yn: show_yn,
+    order_no: order_no
   },{
     where: {
       gcseq: seq
@@ -290,6 +402,7 @@ exports.get_admin_category_class = async (req, res) => {
     select
       a.regdt,
       a.gccseq,
+      a.order_no,
       b.gcl_name
     from gasa_category_class as a
     inner join gasa_class as b
@@ -334,7 +447,8 @@ exports.post_admin_category_class = async (req, res) => {
   .then(() => {
     return res.send('Y')
   })
-  .catch(() => {
+  .catch((err) => {
+    console.error(err)
     return res.send('N')
   })
 }
@@ -357,6 +471,38 @@ exports.delete_admin_category_class = async (req, res) => {
   })
 }
 
+// 카테고리 클래스 순서 저장
+exports.post_admin_category_class_order = async (req, res) => {
+  const seq = req.params.seq
+  const [categoryClass] = await db.sequelize.query(`
+    select
+      gccseq
+    from gasa_category_class
+    where
+      gcseq = ${seq}
+  `)
+  
+  let orderNo = ""
+  categoryClass.forEach(cate => {
+    orderNo = req.body[`order_no_${cate.gccseq}`]
+    models.gasa_category_class.update({
+      order_no: orderNo
+    }, {
+      where: {
+        gccseq: cate.gccseq
+      }
+    })
+  })
+
+
+  return res.send(`
+    <script>
+      alert("저장되었습니다.");
+      location.href = "/admin/category/class/${seq}";
+    </script>
+  `)
+}
+
 // 클래스 영상 등록 페이지
 exports.get_admin_class_video = async (req, res) => {
   const seq = req.params.seq
@@ -367,6 +513,7 @@ exports.get_admin_class_video = async (req, res) => {
     select 
       a.gclvseq,
       a.regdt,
+      a.order_no,
       b.gcv_name
     from gasa_class_video as a
     inner join gasa_video as b on a.gcvseq = b.gcvseq
@@ -429,19 +576,75 @@ exports.delete_admin_class_video = async (req, res) => {
   })
 }
 
+// 클래스 영상 순서 저장
+exports.post_admin_class_video_order = async (req, res) => {
+  const seq = req.params.seq
+  const [classVideo] = await db.sequelize.query(`
+    select
+      gclvseq
+    from gasa_class_video
+    where
+      gclseq = ${seq}
+  `)
+
+  let orderNo = ""
+  classVideo.forEach(classes => {
+    orderNo = req.body[`order_no_${classes.gclvseq}`]
+    models.gasa_class_video.update({
+      order_no: orderNo
+    }, {
+      where: {
+        gclvseq: classes.gclvseq
+      }
+    })
+  })
+
+  return res.send(`
+    <script>
+      alert("저장되었습니다.");
+      location.href = "/admin/class/video/${seq}";
+    </script>
+  `)
+}
+
 // 클래스 리스트
 exports.get_admin_class = async (req, res) => {
   const seq = url.parse(req.url, true).query.seq === undefined ? 1 
-              : url.parse(req.url, true).query.seq
+    : url.parse(req.url, true).query.seq
+  const className = url.parse(req.url, true).query.id === undefined ? '' :
+    url.parse(req.url, true).query.id
 
   const classes = await models.gasa_class.findAll({
+    where: {
+      gcl_name: {
+        [Op.like]: `%${className}%`
+      }
+    },
     offset: 20 * (seq - 1),
     limit: 20
   })
 
+  let max_num = await models.gasa_class.count({
+    where: {
+      gcl_name: {
+        [Op.like]: `%${className}%`
+      }
+    }
+  })
+
+  max_num = parseInt((max_num) / 20) + 1
+
+  const startPage = parseInt((seq - 1) / 10) * 10 + 1
+  const endPage = ((parseInt(seq -1) / 10) + 1) * 10 > max_num ? max_num
+    : (parseInt(((seq - 1) / 10)) + 1) * 10
+
   return res.render('admin/class_list', {
     classes,
-    seq
+    seq,
+    max_num,
+    startPage,
+    endPage,
+    className
   })
 }
 
@@ -575,18 +778,210 @@ exports.update_admin_class = async (req, res) => {
   })
 }
 
+// 전체 회원권한 등록
+exports.post_admin_class_user_all = async (req, res) => {
+  const { classSeq } = req.body
+  const userAllList = await models.gasa_user.findAll({
+
+  })
+  userAllList.forEach((user) => {
+    models.gasa_class_user.count({
+      where:{
+        guseq: user.guseq,
+        gclseq: classSeq
+      }
+    })
+    .then(userCnt => {
+      if(userCnt === 0)
+      {
+        models.gasa_class_user.create({
+          guseq: user.guseq,
+          gclseq: classSeq
+        })
+      }
+    })
+  })
+
+  return res.send('Y')
+}
+
 // 영상관리
 exports.get_admin_video = async (req, res) => {
   const seq = url.parse(req.url, true).query.seq === undefined ? 1 
-              : url.parse(req.url, true).query.seq
+    : url.parse(req.url, true).query.seq
+  const videoName = url.parse(req.url, true).query.id === undefined ? '' 
+  : url.parse(req.url, true).query.id
 
   const classes = await models.gasa_video.findAll({
+    where: {
+      gcv_name: {
+        [Op.like]: `%${videoName}%`
+      }
+    },
     offset: 20 * (seq - 1),
     limit: 20
   })
 
+  let max_num = await models.gasa_video.count({
+    where: {
+      gcv_name: {
+        [Op.like]: `%${videoName}%`
+      }
+    }
+  })
+
+  max_num = parseInt((max_num) / 20) + 1
+
+  const startPage = parseInt((seq - 1) / 10) * 10 + 1
+  const endPage = ((parseInt(seq -1) / 10) + 1) * 10 > max_num ? max_num
+    :  (parseInt(((seq - 1) / 10)) + 1) * 10
+
   return res.render('admin/video_list', {
-    classes
+    classes,
+    max_num,
+    seq,
+    startPage,
+    endPage,
+    videoName,
+  })
+}
+
+// 클래스 회원 권한 등록 페이지
+exports.get_admin_class_user = async (req, res) => {
+  const seq = req.params.seq
+  const pageNum = url.parse(req.url, true).query.seq === undefined ? 1 
+    : url.parse(req.url, true).query.seq
+  const userId = url.parse(req.url, true).query.id === undefined ? '' 
+    : url.parse(req.url, true).query.id
+
+  const offsetNum = 20 * (pageNum - 1)
+
+  const [userList] = await db.sequelize.query(`
+    select
+      a.*,
+      case when 
+        a.guseq = (select guseq from gasa_class_user where gclseq = ${seq} and guseq = a.guseq)
+      then 'Y'
+      else 'N' end as isClassUser
+    from gasa_user as a
+    where
+      a.guid like '%${userId}%'
+    limit 20
+    offset ${offsetNum}
+  `)
+
+
+  let max_num = await models.gasa_user.count({
+    where: {
+      guid: {
+        [Op.like]: `%${userId}%`
+      }
+    }
+  })
+
+  max_num = parseInt((max_num) / 20) + 1
+
+  const startPage = parseInt((seq - 1) / 10) * 10 + 1
+  const endPage = ((parseInt(seq -1) / 10) + 1) * 10 > max_num ? max_num
+    :  (parseInt(((seq - 1) / 10)) + 1) * 10
+
+  return res.render("admin/class_user", {
+    seq,
+    userList,
+    max_num,
+    pageNum,
+    startPage,
+    endPage,
+    userId,
+  })
+}
+
+// 클래스 회원 권한 등록
+exports.post_admin_class_user = async (req, res) => {
+  const {
+    seq,
+    guseq
+  } = req.body
+
+  models.gasa_class_user.create({
+    guseq: guseq,
+    gclseq: seq
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+// 클래스 회원 권한 삭제
+exports.delete_admin_class_user = async (req, res) => {
+  const {
+    seq,
+    guseq
+  } = req.body
+
+  models.gasa_class_user.destroy({
+    where:
+    {
+      guseq: guseq,
+      gclseq: seq
+    }
+  })
+  .then(() => {
+    return res.send('Y')
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
+
+// 클래스 시청 기록 페이지
+exports.get_admin_class_user_history = async (req, res) => {
+  const seq = req.params.seq
+  const pageNum = url.parse(req.url, true).query.seq === undefined ? 1 
+    : url.parse(req.url, true).query.seq
+  const userId = url.parse(req.url, true).query.id === undefined ? '' 
+    : url.parse(req.url, true).query.id
+
+  let max_num = 0
+  const countUser = await models.gasa_class_user_history.count({
+    where: {
+      gclseq: seq
+    },
+    group: "guseq"
+  })
+
+  const [userHistoryList] = await db.sequelize.query(`
+    select
+      (select guid from gasa_user where guseq = a.guseq) as userId,
+      case when gcl_complete = '1' then 'Y' else 'N' end as isComplete,
+      a.gcl_complete_date
+    from gasa_class_user_history as a
+    where
+      a.gclseq = ${seq}
+    group by guseq, gcl_complete, gcl_complete_date
+  `)
+
+  countUser.forEach(max => {
+    max_num += max.count
+  })
+
+  max_num = parseInt((max_num) / 20) + 1
+
+  const startPage = parseInt((pageNum - 1) / 10) * 10 + 1
+  const endPage = ((parseInt(pageNum -1) / 10) + 1) * 10 > max_num ? max_num
+    : (parseInt(((pageNum - 1) / 10)) + 1) * 10
+
+  return res.render('admin/class_user_history', {
+    seq,
+    max_num,
+    pageNum,
+    startPage,
+    endPage,
+    userId,
+    userHistoryList,
   })
 }
 
