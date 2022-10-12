@@ -155,7 +155,8 @@ exports.post_admin_user_regist = async(req, res) => {
           gupass = aes_encrypt('${data[Object.keys(data)[1]]}', '${process.env.DB_ENCRYPT_KEY}'),
           guname = '${data[Object.keys(data)[2]]}',
           guemail = '${data[Object.keys(data)[3]]}',
-          guphone = '${phoneNo}'
+          guphone = '${phoneNo}',
+          regdt = now()
       `).then((result) => {
         models.gasa_user_group.create({
           gug_name: data[Object.keys(data)[5]],

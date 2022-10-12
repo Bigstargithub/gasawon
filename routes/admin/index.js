@@ -48,7 +48,7 @@ const userFile = multer({ storage: userFileMulter })
 const videoThumbFile = multer({ storage: videoThumbMulter })
 const classThumbFile = multer({ storage: classThumbMulter })
 
-router.get('/',ctrlAdmin.get_admin_main)
+router.get('/',is_login,ctrlAdmin.get_admin_main)
 
 // 관리자 로그인
 router.get('/login',ctrlAdmin.get_admin_login)

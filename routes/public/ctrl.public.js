@@ -181,7 +181,7 @@ exports.post_logout = async (req, res) => {
 
 
 exports.get_detail = async (req, res) => {
-  let userName 
+  let userName
   if(req.session.login !== undefined)
   {
     [userName] = await models.gasa_user.findAll({
@@ -219,12 +219,26 @@ exports.get_detail = async (req, res) => {
     }
   })
 
+  let classUser
+  if(req.session.login !== undefined)
+  {
+    [classUser] = await models.gasa_class_user.findAll({
+      where:{
+        guseq: userName.guseq,
+        gclseq: id
+      }
+    });
+  }
+  
+  const isClassUser = classUser === undefined ? "N" : "Y"
+
   return res.render('detail', {
     classList,
     userName,
     lifeSeq,
     openAndClose,
-    exampleSeq
+    exampleSeq,
+    isClassUser
   })
 }
 

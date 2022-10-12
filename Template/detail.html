@@ -16,7 +16,9 @@
         <div class="teacher">{{classList.gcl_tc_name}}</div>
         <div class="title">{{classList.gcl_name}}</div>
         <div class="share" onClick="share_url()">공유하기</div>
-        <div class="play">강의 보러가기</div>
+        {% if isClassUser == 'Y' %}
+        <div class="play" onclick="move_page('/class/view/{{classList.gclseq}}')">강의 보러가기</div>
+        {% endif %}
       </div>
     </div>
   </div>
